@@ -1,0 +1,49 @@
+header{
+    height: 80px;
+    background-color: #FFF;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 26px;
+    h1{
+        margin-left: 22px;
+        font-size: 18px;
+        font-weight: 400;
+        line-height: 28px;
+        letter-spacing: 0em;
+        text-align: left;
+        
+    }
+    .right{
+        display: flex;
+        .sign-in{
+            background: none;
+            border: none;
+            width: 84px;
+            height: 35px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            color: rgba(0, 0, 0, 0.85);
+            font-size: 18px;
+            font-weight: 400;
+            line-height: 28px;
+            letter-spacing: 0%;
+            margin-right: 19px;
+    
+        }
+        .sign-up{
+            background: none;
+            border: none;
+            box-sizing: border-box;
+            border: 1px solid rgb(82, 196, 26);
+            border-radius: 5px;
+            color: rgb(82, 196, 26);
+            font-size: 18px;
+            font-weight: 400;
+            line-height: 28px;
+            margin-right: 22px;
+        }
+    }
+    
+}
