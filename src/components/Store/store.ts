@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import ArticleReducer from './ArticleSlice'
+import AccountReducer from './AccountSlice'
 
 const store = configureStore({
   reducer: {
     articles: ArticleReducer,
+    account: AccountReducer
   },
 })
 

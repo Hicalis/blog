@@ -5,6 +5,9 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Article from '../Article/Article';
 import { useAppDispatch } from '../hook';
 import { getArticles } from '../Store/ArticleSlice';
+import NewAccount from '../NewAccount/NewAccount';
+import Login from '../Login/Login';
+import EditProfile from '../EditProfile/EditProfile';
 
 const router = createBrowserRouter([
   {
@@ -18,6 +21,18 @@ const router = createBrowserRouter([
 {
   path:`/articles/:id`,
   element:<Article/>
+},
+{
+  path:'/sign-up',
+  element:<NewAccount/>
+},
+{
+  path:'/sign-in',
+  element:<Login/>
+},
+{
+  path:'/profile',
+  element:<EditProfile/>
 }
 ])
 
