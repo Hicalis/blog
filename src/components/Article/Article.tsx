@@ -28,6 +28,7 @@ const Article: FC = () => {
   const slug = article?.slug!;
   const navigate = useNavigate();
   const [messageApi, contextHolder] = message.useMessage();
+  const isLogged = useAppSelector((state) => state.account.isLogged);
 
   const error = () => {
     messageApi.open({
@@ -40,7 +41,7 @@ const Article: FC = () => {
     navigate("/articles");
   };
   const handleAddLike = async () => {
-    if (localStorage.getItem("isLogged") === "false") {
+    if (localStorage.getItem("isLogged") === "false" || !isLogged) {
       error();
     } else {
       await dispatch(addLike({ slug, key }));

@@ -32,6 +32,7 @@ const ArticleItem: FC<Article> = (props) => {
   const slug = props.slug;
   const [messageApi, contextHolder] = message.useMessage();
   const currentPage = useAppSelector((state) => state.articles.currentPage);
+  const isLogged = useAppSelector((state) => state.account.isLogged);
 
   const error = () => {
     messageApi.open({
@@ -41,7 +42,7 @@ const ArticleItem: FC<Article> = (props) => {
   };
 
   const handleAddLike = async () => {
-    if (localStorage.getItem("isLogged") === "false") {
+    if (localStorage.getItem("isLogged") === "false" || !isLogged) {
       error();
     } else {
       await dispatch(addLike({ slug, key }));
