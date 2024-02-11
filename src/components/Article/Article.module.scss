@@ -23,6 +23,12 @@
     .leftTop {
       display: flex;
       align-items: center;
+      button {
+        display: flex;
+        cursor: pointer;
+        border: none;
+        background: none;
+      }
       h2 {
         /* H5 - Header 5 */
         color: rgb(24, 144, 255);
@@ -32,6 +38,12 @@
         letter-spacing: 0%;
         text-align: left;
         margin-right: 13px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-break: break-word;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
       }
       h3 {
         margin-left: 5px;
@@ -41,9 +53,16 @@
       display: flex;
       .tag {
         box-sizing: border-box;
+        margin: 0 8px 4px 0;
+        flex-wrap: wrap;
         /* @text-color-secondary */
         border: 1px solid rgba(0, 0, 0, 0.5);
-
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-break: break-word;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
         border-radius: 2px;
         color: rgba(0, 0, 0, 0.5);
         font-size: 12px;

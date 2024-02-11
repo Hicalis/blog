@@ -129,11 +129,13 @@ export const accountSlice = createSlice({
         state.user = action.payload;
         state.errorLogin = false;
         state.isLogged = true;
-        console.log(state.errorLogin);
         if (action.payload.user.image) {
           localStorage.setItem("avatar", action.payload.user.image);
         } else {
-          localStorage.setItem("avatar", action.payload.user.image);
+          localStorage.setItem(
+            "avatar",
+            "https://platform.kata.academy/images/man.png"
+          );
         }
         localStorage.setItem("token", action.payload.user.token);
         localStorage.setItem("email", action.payload.user.email);

@@ -12,20 +12,18 @@ const ArticleList: FC = () => {
   const currentPage = useAppSelector((state) => state.articles.currentPage);
   const articleCount =
     useAppSelector((state) => state.articles.articlesCount) / 5;
-  console.log(articleCount);
-
   const dispatch = useAppDispatch();
 
   const handlerArticles = (e: number) => {
     dispatch(changePage(e));
-    dispatch(getArticles(e));
+    dispatch(getArticles({ page: e, key: localStorage.getItem("token")! }));
   };
 
   useEffect(() => {
-    dispatch(getArticles(1));
-  }, [dispatch]);
-
-  console.log(articles);
+    dispatch(
+      getArticles({ page: currentPage, key: localStorage.getItem("token")! })
+    );
+  }, [currentPage, dispatch]);
 
   return (
     <React.Fragment>

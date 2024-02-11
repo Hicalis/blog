@@ -89,6 +89,7 @@ const EditProfile: FC = () => {
             placeholder="New password"
             type="text"
             {...register("password", {
+              required: "Password is required",
               minLength: {
                 value: 6,
                 message: "Password must be at 6 to 40 characters",

@@ -15,9 +15,21 @@
     margin-left: 14px;
     .leftTop {
       display: flex;
-      align-items: center;
+      align-items: flex-end;
+      button {
+        display: flex;
+        border: none;
+        background: none;
+        cursor: pointer;
+      }
       h2 {
         /* H5 - Header 5 */
+        word-break: break-all;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
         color: rgb(24, 144, 255);
         font-size: 20px;
         font-weight: 400;
@@ -32,11 +44,21 @@
     }
     .articleTags {
       display: flex;
+      flex-wrap: wrap;
+      max-height: 40px;
+      overflow: hidden;
+      text-overflow: ellipsis;
       .tag {
         box-sizing: border-box;
         /* @text-color-secondary */
         border: 1px solid rgba(0, 0, 0, 0.5);
-
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-break: break-word;
+        margin: 0 8px 4px 0;
         border-radius: 2px;
         color: rgba(0, 0, 0, 0.5);
         font-size: 12px;
@@ -47,6 +69,11 @@
       }
     }
     p {
+      max-height: 50px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      word-break: break-word;
+
       /* @font-size-sm: 12px */
       color: rgba(0, 0, 0, 0.75);
       font-family: Inter UI;

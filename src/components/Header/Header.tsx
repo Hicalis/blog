@@ -1,16 +1,16 @@
 import React, { FC, useEffect, useState } from "react";
 import classes from "./Header.module.scss";
 import { Link, useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../hook";
+import { useAppDispatch, useAppSelector } from "../hook";
 import { logOut } from "../Store/AccountSlice";
+import { getArticles } from "../Store/ArticleSlice";
 
 const Header: FC = () => {
   const dispatch = useAppDispatch();
   const [isLogged, setIsLogged] = useState(localStorage.getItem("isLogged"));
-  useEffect(() => {
-    console.log("Значение isLogged изменилось:", isLogged);
-  }, [isLogged]);
+  useEffect(() => {}, [isLogged]);
   const navigate = useNavigate();
+  const currentPage = useAppSelector((state) => state.articles.currentPage);
 
   return (
     <header>
@@ -37,6 +37,7 @@ const Header: FC = () => {
                 localStorage.clear();
                 setIsLogged(localStorage.setItem("isLogged", "false")!);
                 dispatch(logOut());
+                dispatch(getArticles({ page: currentPage, key: "" }));
                 navigate("/articles");
               }}
             >

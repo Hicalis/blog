@@ -6,3 +6,6 @@ body {
   height: 100vh;
   background: #ebeef3;
 }
+a {
+  text-decoration: none;
+}

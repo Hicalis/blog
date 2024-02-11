@@ -2,11 +2,24 @@ import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 export const getArticles = createAsyncThunk(
   "getArticles",
-  async (page: number) => {
+  async ({ page, key }: { page: number; key: string }) => {
     const offset = page * 5 - 5;
-    const res = await fetch(
-      `https://blog.kata.academy/api/articles?limit=5&offset=${offset}`
-    );
+    let res: Response;
+    if (key) {
+      res = await fetch(
+        `https://blog.kata.academy/api/articles?limit=5&offset=${offset}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Token ${key}`,
+          },
+        }
+      );
+    } else {
+      res = await fetch(
+        `https://blog.kata.academy/api/articles?limit=5&offset=${offset}`
+      );
+    }
     const articles = await res.json();
     return articles;
   }
@@ -14,10 +27,57 @@ export const getArticles = createAsyncThunk(
 
 export const getArticleBySlug = createAsyncThunk(
   "getArticleBySlug",
-  async (slug: string) => {
-    const res = await fetch(`https://blog.kata.academy/api/articles/${slug}`);
+  async ({ slug, key }: { slug: string; key: string }) => {
+    let res: Response;
+    if (key) {
+      res = await fetch(`https://blog.kata.academy/api/articles/${slug}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Token ${key}`,
+        },
+      });
+    } else {
+      res = await fetch(`https://blog.kata.academy/api/articles/${slug}`);
+    }
     const article = await res.json();
     return article.article;
+  }
+);
+
+export const addLike = createAsyncThunk(
+  "addLike",
+  async ({ slug, key }: { slug: string; key?: string }) => {
+    const res = await fetch(
+      `https://blog.kata.academy/api/articles/${slug}/favorite`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Token ${key}`,
+        },
+      }
+    );
+    const like = await res.json();
+    return like;
+  }
+);
+
+export const removeLike = createAsyncThunk(
+  "addLike",
+  async ({ slug, key }: { slug: string; key?: string }) => {
+    const res = await fetch(
+      `https://blog.kata.academy/api/articles/${slug}/favorite`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Token ${key}`,
+        },
+      }
+    );
+    const like = await res.json();
+    if (like.errors.error.status === 401) {
+      throw new Error(like.errors.error.status);
+    }
+    return like;
   }
 );
 
@@ -132,6 +192,7 @@ type ArticleState = {
   articlesCount: number;
   currentPage: number;
   errorCreate: boolean;
+  errorAddLike: boolean;
 };
 
 const initialState: ArticleState = {
@@ -139,8 +200,9 @@ const initialState: ArticleState = {
   article: null,
   status: "",
   articlesCount: 1,
-  currentPage: 0,
+  currentPage: 1,
   errorCreate: false,
+  errorAddLike: false,
 };
 
 export const articlesSlice = createSlice({
@@ -168,7 +230,7 @@ export const articlesSlice = createSlice({
         state.status = "loading";
       })
       .addCase(getArticles.rejected, () => {
-        getArticles(1);
+        getArticles({ page: 1, key: localStorage.getItem("token")! });
       })
       .addCase(getArticleBySlug.pending, (state) => {
         state.status = "loading";

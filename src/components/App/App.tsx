@@ -44,7 +44,7 @@ const App: FC = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(getArticles(1));
+    dispatch(getArticles({ page: 1, key: localStorage.getItem("token")! }));
   }, [dispatch]);
 
   return (

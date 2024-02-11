@@ -1,13 +1,25 @@
 import { FC } from "react";
 import classes from "./ArticleItem.module.scss";
 import { Link } from "react-router-dom";
-import { Article, getArticleBySlug } from "../Store/ArticleSlice";
-import { useAppDispatch } from "../hook";
+import {
+  Article,
+  addLike,
+  getArticleBySlug,
+  getArticles,
+  removeLike,
+} from "../Store/ArticleSlice";
+import { useAppDispatch, useAppSelector } from "../hook";
+import { message } from "antd";
 
 const ArticleItem: FC<Article> = (props) => {
   const dispatch = useAppDispatch();
   const handlerArticle = () => {
-    dispatch(getArticleBySlug(props.slug));
+    dispatch(
+      getArticleBySlug({
+        slug: props.slug,
+        key: localStorage.getItem("token")!,
+      })
+    );
   };
   const dateString = props.createdAt;
   const date = new Date(dateString);
@@ -16,16 +28,55 @@ const ArticleItem: FC<Article> = (props) => {
     month: "long",
     day: "numeric",
   });
+  const key = localStorage.getItem("token")!;
+  const slug = props.slug;
+  const [messageApi, contextHolder] = message.useMessage();
+  const currentPage = useAppSelector((state) => state.articles.currentPage);
+
+  const error = () => {
+    messageApi.open({
+      type: "error",
+      content: "Чтобы проставить лайк, нужно авторизоваться",
+    });
+  };
+
+  const handleAddLike = async () => {
+    if (localStorage.getItem("isLogged") === "false") {
+      error();
+    } else {
+      await dispatch(addLike({ slug, key }));
+      await dispatch(
+        getArticles({ page: currentPage, key: localStorage.getItem("token")! })
+      );
+    }
+  };
+
+  const handleRemoveLike = async () => {
+    await dispatch(removeLike({ slug, key }));
+    await dispatch(
+      getArticles({ page: currentPage, key: localStorage.getItem("token")! })
+    );
+  };
 
   return (
     <div className={classes.article}>
+      {contextHolder}
       <div className={classes.left}>
         <div className={classes.leftTop}>
           <Link to={`/articles/${props.slug}`}>
             <h2 onClick={handlerArticle}>{props.title}</h2>
           </Link>
-          {heart}
-          <h3>{props.favoritesCount}</h3>
+          {props.favorited ? (
+            <button type="button" onClick={handleRemoveLike}>
+              {redHeart}
+              <h3>{props.favoritesCount}</h3>
+            </button>
+          ) : (
+            <button type="button" onClick={handleAddLike}>
+              {heart}
+              <h3>{props.favoritesCount}</h3>
+            </button>
+          )}
         </div>
         <div className={classes.articleTags}>
           {props.tagList.map((el) => {
@@ -84,6 +135,26 @@ const heart = (
   4.46973 0.937256Z"
       fill="#000000"
       fillOpacity="0.750000"
+      fillRule="nonzero"
+    />
+  </svg>
+);
+
+const redHeart = (
+  <svg
+    width="14.276917"
+    height="13.046143"
+    viewBox="0 0 14.2769 13.0461"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <desc>Created with Pixso.</desc>
+    <defs />
+    <path
+      id="path4"
+      d="M7.13846 2.09229C6.39999 0.861572 5.16922 0 3.69232 0C1.60001 0 0 1.6001 0 3.69238C0 7.75391 2.21539 8.36914 7.13846 13.0461C12.0615 8.36914 14.2769 7.75391 14.2769 3.69238C14.2769 1.6001 12.6769 0 10.5846 0C9.1077 0 7.87692 0.861572 7.13846 2.09229Z"
+      fill="#FF0707"
+      fillOpacity="1.000000"
       fillRule="nonzero"
     />
   </svg>
