@@ -1,114 +1,157 @@
-import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-export const registerUser = createAsyncThunk('registerUser',
-async ({ username, email, password }: { username: string, email: string, password: string },
-    {rejectWithValue})=>{
-    
-        const res = await fetch(`https://blog.kata.academy/api/users`,{
-            method:'POST',
-            headers:{
-                'Content-Type': 'application/json',
-            },
-            body:`{"user":{"username":"${username}","email":"${email}",
-            "password":"${password}"}}`,
-        })
-        if (!res.ok) {
-            // Ошибка, если ответ не "200 OK"
-            return rejectWithValue(1);
-        }
-        const user = await res.json()
-        return user
-            
-    
-})
+export const registerUser = createAsyncThunk(
+  "registerUser",
+  async ({
+    username,
+    email,
+    password,
+  }: {
+    username: string;
+    email: string;
+    password: string;
+  }) => {
+    const res = await fetch(`https://blog.kata.academy/api/users`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: `{"user":{"username":"${username}","email":"${email}","password":"${password}"}}`,
+    });
+    const user = await res.json();
+    return user;
+  }
+);
 
-export const loginUser = createAsyncThunk('loginUser',
-async({email,password}:{email:string, password:string},{rejectWithValue})=>{
-    const res = await fetch(`https://blog.kata.academy/api/users/login`,{
-            method:'POST',
-            headers:{
-                'Content-Type': 'application/json',
-            },
-            body: `{"user":{"email":"${email}","password":"${password}"}}`,
-        })
-        if(!res.ok){
-            return rejectWithValue(1);
-        }
-        const user = await res.json()
-        return user
-    }
-)
+export const loginUser = createAsyncThunk(
+  "loginUser",
+  async ({ email, password }: { email: string; password: string }) => {
+    const res = await fetch(`https://blog.kata.academy/api/users/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: `{"user":{"email":"${email}","password":"${password}"}}`,
+    });
+    const user = await res.json();
+    return user;
+  }
+);
 
-export const editUser = createAsyncThunk('editUser',
-async ({username, email, password, url, key}:
-    {username:string,email:string, password:string, url:string, key:string}
-    ,{rejectWithValue})=>{
-    const res = await fetch(`https://blog.kata.academy/api/user`,{
-        method:'PUT',
-        headers:{
-            'Content-Type': 'application/json',
-            'Authorization':`${key}`
-        },
-        body: `{"user":{"email":"${email}","username":"${username}","image":"${url}","password":"${password}"}}`
-    })
-    if(!res.ok){
-        return rejectWithValue(1);
-    }
-    const user = await res.json()
-    return user
-}
-)
+export const editUser = createAsyncThunk(
+  "editUser",
+  async ({
+    username,
+    email,
+    password,
+    url,
+    key,
+  }: {
+    username: string;
+    email: string;
+    password: string;
+    url: string;
+    key: string;
+  }) => {
+    if (url.length === 0) url = `https://platform.kata.academy/images/man.png`;
+    const res = await fetch(`https://blog.kata.academy/api/user`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${key}`,
+      },
+      body: `{"user":{"email":"${email}","username":"${username}","image":"${url}","password":"${password}"}}`,
+    });
 
+    const user = await res.json();
+    return user;
+  }
+);
 
-export type Account = {
+type Account = {
+  email: string;
+  token: string;
+  username: string;
+  image: string;
+};
 
-}
+type AccountState = {
+  user: {
+    user: Account;
+  };
+  error: boolean;
+  errorLogin: boolean;
+  errorRegister: boolean;
+  errorEdit: boolean;
+  result: string;
+  isLogged: boolean;
+};
 
-const initialState = {
-    user:{
-        user:{
-            email:'',
-            token:'',
-            username:''
-        }
+const initialState: AccountState = {
+  user: {
+    user: {
+      email: "",
+      token: "",
+      username: "",
+      image: "https://static.productionready.io/images/smiley-cyrus.jpg",
     },
-    error:false,
-    result:'',
-    isLogged:false
-}
+  },
+  error: false,
+  errorLogin: false,
+  errorRegister: false,
+  errorEdit: false,
+  result: "",
+  isLogged: false,
+};
 
 export const accountSlice = createSlice({
-    name:'account',
-    initialState,
-    reducers: {},
-    extraReducers: (builder) => {
-        builder
-            .addCase(registerUser.fulfilled,(state)=>{
-                state.result = '200'
-                state.error = false
-            })
-            .addCase(registerUser.rejected,(state, action:PayloadAction<any>)=>{
-                state.error = true
-            })
-            .addCase(loginUser.rejected,(state, action)=>{
-                state.error = true
-            })
-            .addCase(loginUser.fulfilled,(state,action)=>{
-                state.user = action.payload
-                state.error = false
-                state.isLogged = true
-                localStorage.setItem('email',action.payload.user.email)
-                localStorage.setItem('token',action.payload.user.token)
-                localStorage.setItem('isLogged', 'true')
-                localStorage.setItem('username',action.payload.user.username)
-            })
-            .addCase(editUser.rejected,(state, action)=>{
-                state.error = true
-            })
-            .addCase(editUser.fulfilled,(state, action)=>{
-                state.user = action.payload
-            })
-    }
-})
+  name: "account",
+  initialState,
+  reducers: {
+    logOut(state) {
+      state.isLogged = false;
+      localStorage.setItem("isLogged", "false");
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(registerUser.fulfilled, (state) => {
+        state.result = "200";
+        state.errorRegister = false;
+      })
+      .addCase(registerUser.rejected, (state) => {
+        state.errorRegister = true;
+      })
+      .addCase(loginUser.rejected, (state) => {
+        state.errorLogin = true;
+      })
+      .addCase(loginUser.fulfilled, (state, action) => {
+        state.user = action.payload;
+        state.errorLogin = false;
+        state.isLogged = true;
+        console.log(state.errorLogin);
+        if (action.payload.user.image) {
+          localStorage.setItem("avatar", action.payload.user.image);
+        } else {
+          localStorage.setItem("avatar", action.payload.user.image);
+        }
+        localStorage.setItem("token", action.payload.user.token);
+        localStorage.setItem("email", action.payload.user.email);
+        localStorage.setItem("isLogged", "true");
+        localStorage.setItem("username", action.payload.user.username);
+      })
+      .addCase(editUser.rejected, (state) => {
+        state.errorEdit = true;
+      })
+      .addCase(editUser.fulfilled, (state, action) => {
+        state.user = action.payload;
+        state.errorEdit = false;
+        localStorage.setItem("username", state.user.user.username);
+        localStorage.setItem("email", state.user.user.email);
+        localStorage.setItem("avatar", state.user.user.image);
+      });
+  },
+});
 
-export default accountSlice.reducer
+export default accountSlice.reducer;
+export const { logOut } = accountSlice.actions;

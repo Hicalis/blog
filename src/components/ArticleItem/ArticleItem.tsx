@@ -1,58 +1,67 @@
-import { FC } from "react"
-import classes from './ArticleItem.module.scss'
-import { Link } from "react-router-dom"
-import { Article, getArticleBySlug } from '../Store/ArticleSlice';
+import { FC } from "react";
+import classes from "./ArticleItem.module.scss";
+import { Link } from "react-router-dom";
+import { Article, getArticleBySlug } from "../Store/ArticleSlice";
 import { useAppDispatch } from "../hook";
 
+const ArticleItem: FC<Article> = (props) => {
+  const dispatch = useAppDispatch();
+  const handlerArticle = () => {
+    dispatch(getArticleBySlug(props.slug));
+  };
+  const dateString = props.createdAt;
+  const date = new Date(dateString);
+  const formattedDate = date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 
-const ArticleItem:FC<Article> = (props) => {
-
-    const dispatch = useAppDispatch()
-    const handlerArticle = () => {
-        dispatch(getArticleBySlug(props.slug))
-    }
-    const dateString = props.createdAt;
-    const date = new Date(dateString);
-    const formattedDate = date.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
-
-    return(
-        <div className={classes.article}>
-            <div className={classes.left}>
-                <div className={classes.leftTop}>
-                    <Link to={`/articles/${props.slug}`}><h2 onClick={handlerArticle}>{props.title}</h2></Link>
-                    {heart}
-                    <h3>{props.favoritesCount}</h3> 
-                </div>
-                <div className={classes.articleTags}>
-                    {props.tagList.map((el)=>{
-                        return(<div className={classes.tag} key={el}>
-                            {el}
-                        </div>)
-                    })}
-                </div>
-                <p>
-                    {props.description}
-                </p>
-            </div>
-            <div className={classes.right}>
-                <div className={classes.rightInfo}>
-                    <h2>{props.author.username}</h2>
-                    <h3>{formattedDate}</h3>
-                </div>
-                <img src={`${props.author.image}`} alt="sdas"/>
-            </div>
+  return (
+    <div className={classes.article}>
+      <div className={classes.left}>
+        <div className={classes.leftTop}>
+          <Link to={`/articles/${props.slug}`}>
+            <h2 onClick={handlerArticle}>{props.title}</h2>
+          </Link>
+          {heart}
+          <h3>{props.favoritesCount}</h3>
         </div>
-        
-    )
-}
+        <div className={classes.articleTags}>
+          {props.tagList.map((el) => {
+            return (
+              <div className={classes.tag} key={el}>
+                {el}
+              </div>
+            );
+          })}
+        </div>
+        <p>{props.description}</p>
+      </div>
+      <div className={classes.right}>
+        <div className={classes.rightInfo}>
+          <h2>{props.author.username}</h2>
+          <h3>{formattedDate}</h3>
+        </div>
+        <img src={`${props.author.image}`} alt="sdas" />
+      </div>
+    </div>
+  );
+};
 
-
-const heart = (<svg width="15.999969" height="14.234863" viewBox="0 0 16 14.2349" fill="none" xmlns="http://www.w3.org/2000/svg">
-<desc>
-        Created with Pixso.
-</desc>
-<defs/>
-<path id="Vector" d="M8 14.2349C7.77222 14.2349 7.55261 14.1523 7.38147 
+const heart = (
+  <svg
+    width="15.999969"
+    height="14.234863"
+    viewBox="0 0 16 14.2349"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <desc>Created with Pixso.</desc>
+    <defs />
+    <path
+      id="Vector"
+      d="M8 14.2349C7.77222 14.2349 7.55261 14.1523 7.38147 
 14.0024C6.73511 13.4373 6.11194 12.9061 5.56213 12.4376L5.55933 12.4352C3.94739 
 11.0615 2.55542 9.87524 1.58691 8.70667C0.504272 7.40027 0 6.16162 0 4.80847C0 
 3.49377 0.450806 2.28088 1.26929 1.39307C2.09753 0.494751 3.23401 0 4.46973 
@@ -72,8 +81,12 @@ const heart = (<svg width="15.999969" height="14.234863" viewBox="0 0 16 14.2349
  1.60913C9.0759 2.00659 8.71799 2.50903 8.50815 2.8606C8.40024 3.04138 8.21033
   3.14929 8 3.14929C7.78967 3.14929 7.59973 3.04138 7.49182 2.8606C7.2821 
   2.50903 6.92419 2.00659 6.41028 1.60913C5.83374 1.16333 5.18079 0.937256 
-  4.46973 0.937256Z" fill="#000000" fillOpacity="0.750000" fillRule="nonzero"/>
-</svg>
-)
+  4.46973 0.937256Z"
+      fill="#000000"
+      fillOpacity="0.750000"
+      fillRule="nonzero"
+    />
+  </svg>
+);
 
-export default ArticleItem
+export default ArticleItem;

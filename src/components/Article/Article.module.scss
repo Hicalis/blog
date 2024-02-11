@@ -1,50 +1,49 @@
-.article{
-    width: 941px;     
-    border-radius: 5px;
-    background: rgb(255, 255, 255);
+.article {
+  width: 941px;
+  border-radius: 5px;
+  background: rgb(255, 255, 255);
+  display: flex;
+  margin-bottom: 26px;
+  margin: 0 auto;
+  justify-content: space-between;
+  /* @shadow-2 */
+  box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.15);
+  flex-direction: column;
+  min-height: 750px;
+  justify-content: flex-start;
+  .top {
     display: flex;
-    margin-bottom: 26px ;
-    margin: 0 auto;
+    margin-bottom: 25px;
     justify-content: space-between;
-    /* @shadow-2 */
-    box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.15);
-    flex-direction: column;
-    min-height: 750px;
-    justify-content: flex-start;
-    .top{
-        display: flex;
-        margin-bottom: 25px;
-        justify-content: space-between;
+  }
+  .left {
+    margin-top: 15px;
+    width: 682px;
+    margin-left: 14px;
+    .leftTop {
+      display: flex;
+      align-items: center;
+      h2 {
+        /* H5 - Header 5 */
+        color: rgb(24, 144, 255);
+        font-size: 20px;
+        font-weight: 400;
+        line-height: 28px;
+        letter-spacing: 0%;
+        text-align: left;
+        margin-right: 13px;
+      }
+      h3 {
+        margin-left: 5px;
+      }
     }
-    .left{
-        margin-top: 15px;
-        width: 682px;
-        margin-left: 14px;
-        .leftTop{
-            display: flex;
-            align-items: center;
-            h2{
-                /* H5 - Header 5 */
-                color: rgb(24, 144, 255);
-                font-size: 20px;
-                font-weight: 400;
-                line-height: 28px;
-                letter-spacing: 0%;
-                text-align: left;
-                margin-right: 13px;
-            }
-            h3{
-                margin-left: 5px;
-            }
-        }
-        .articleTags{
-            display: flex;
-            .tag{
-                box-sizing: border-box;
-/* @text-color-secondary */
+    .articleTags {
+      display: flex;
+      .tag {
+        box-sizing: border-box;
+        /* @text-color-secondary */
         border: 1px solid rgba(0, 0, 0, 0.5);
 
-			
         border-radius: 2px;
         color: rgba(0, 0, 0, 0.5);
         font-size: 12px;
@@ -52,54 +51,59 @@
         line-height: 15px;
         letter-spacing: 0%;
         text-align: left;
-            }
-        }
-        p{
-            /* @font-size-sm: 12px */
-color: rgba(0, 0, 0, 0.75);
-font-family: Inter UI;
-font-size: 12px;
-font-weight: 400;
-line-height: 22px;
-letter-spacing: 0px;
-text-align: left;
-        }
+      }
     }
-    .right{
-        margin-top: 15px;
-        margin-right: 14px;
-        
-        display: flex;
-        .rightInfo{
-            margin-right: 12px;
-            h2{
-                /* H6 - Header 6 */
-color: rgba(0, 0, 0, 0.85);
-font-size: 18px;
-font-weight: 400;
-line-height: 28px;
-letter-spacing: 0%;
-text-align: left;
-            }
-            h3{
-                /* @font-size-sm: 12px */
-color: rgba(0, 0, 0, 0.5);
-font-family: Inter UI;
-font-size: 12px;
-font-weight: 400;
-line-height: 22px;
-letter-spacing: 0px;
-text-align: left;
-            }
-        }
-        img{  
-            height: 46px;
-            width: 46px;
-        }
+    p {
+      /* @font-size-sm: 12px */
+      color: rgba(0, 0, 0, 0.75);
+      font-family: Inter UI;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 22px;
+      letter-spacing: 0px;
+      text-align: left;
     }
-    article{
-        margin: 0 14px 14px 14px;
-        color: rgba(0, 0, 0, 0.75);
-
+  }
+  .right {
+    margin-top: 15px;
+    margin-right: 14px;
+    display: flex;
+    flex-direction: column;
+    .edit {
+      border-color: rgb(82, 196, 26);
+      color: rgb(82, 196, 26);
+      margin-left: 12px;
     }
+    .rightInfo {
+      margin-right: 12px;
+      h2 {
+        /* H6 - Header 6 */
+        color: rgba(0, 0, 0, 0.85);
+        font-size: 18px;
+        font-weight: 400;
+        line-height: 28px;
+        letter-spacing: 0%;
+        text-align: left;
+      }
+      h3 {
+        /* @font-size-sm: 12px */
+        color: rgba(0, 0, 0, 0.5);
+        font-family: Inter UI;
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 22px;
+        letter-spacing: 0px;
+        text-align: left;
+      }
+    }
+    img {
+      height: 46px;
+      width: 46px;
+      border-radius: 50%;
+    }
+  }
+  article {
+    margin: 0 14px 14px 14px;
+    color: rgba(0, 0, 0, 0.75);
+  }
 }
