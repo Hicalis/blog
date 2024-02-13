@@ -42,9 +42,7 @@ const ArticleItem: FC<Article> = (props) => {
   };
 
   const handleAddLike = async () => {
-    if (localStorage.getItem("isLogged") === "false") {
-      error();
-    } else {
+    if (localStorage.getItem("isLogged") === "true") {
       await dispatch(addLike({ slug, key }));
       await dispatch(
         getArticles({
@@ -52,6 +50,8 @@ const ArticleItem: FC<Article> = (props) => {
           key: localStorage.getItem("token")!,
         })
       );
+    } else {
+      error();
     }
   };
 
