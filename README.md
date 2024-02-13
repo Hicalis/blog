@@ -1,1 +1,1 @@
-https://blog-swart-five-75.vercel.app/
+https://blog-kxm5.vercel.app/articles
